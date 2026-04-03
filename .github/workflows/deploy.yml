@@ -35,7 +35,7 @@ jobs:
               echo "📦 Clone repo..."
               git clone -b $BRANCH $REPO .
             else
-              echo "🔄 Update code..."
+              echo "🔄 Update code...."
               git fetch origin
               git reset --hard origin/$BRANCH
             fi
