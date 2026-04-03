@@ -44,7 +44,7 @@ jobs:
             sudo chown -R www-data:www-data $APP_DIR
             sudo chmod -R 755 $APP_DIR
 
-            echo "♻️ Reload nginx..."
+            echo "♻️ Reload nginx...."
             sudo systemctl reload nginx
 
             echo "✅ Deploy selesai!"
