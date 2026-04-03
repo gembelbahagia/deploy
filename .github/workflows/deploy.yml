@@ -1,4 +1,4 @@
-name: Deploy to VM via Nginx
+name: 🚀 Deploy to VM (Nginx)
 
 on:
   push:
@@ -10,19 +10,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy via SSH
+      - name: 🚀 Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /var/www/app1
+            set -e
+
+            APP_DIR=/var/www/app1
+            REPO=https://github.com/gembelbahagia/deploy.git
+            BRANCH=main
+
+            echo "🚀 Deploy dimulai..."
+
+            mkdir -p $APP_DIR
+            cd $APP_DIR
+
             if [ ! -d ".git" ]; then
-              git clone https://github.com/USERNAME/REPO.git .
+              echo "📦 Clone repo..."
+              git clone -b $BRANCH $REPO .
             else
-              git pull origin main
+              echo "🔄 Update code..."
+              git fetch origin
+              git reset --hard origin/$BRANCH
             fi
+
+            echo "🔐 Set permission..."
+            sudo chown -R www-data:www-data $APP_DIR
+            sudo chmod -R 755 $APP_DIR
+
+            echo "♻️ Reload nginx..."
+            sudo systemctl reload nginx
+
+            echo "✅ Deploy selesai!"
