@@ -21,7 +21,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/app1
-            rm -rf *
-            git clone https://github.com/gembelbahagia/deploy.git temp
-            mv temp/* .
-            rm -rf temp
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/USERNAME/REPO.git .
+            else
+              git pull origin main
+            fi
